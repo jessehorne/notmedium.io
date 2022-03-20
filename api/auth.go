@@ -30,13 +30,13 @@ func AuthRegister(c *gin.Context) {
   err := c.BindJSON(&req)
 
   if err != nil {
-    help.APIResponse(c, 400, strings.Split(err.Error(), "\n"))
+    help.APIResponse(c, 400, "ValidationError", strings.Split(err.Error(), "\n"))
     return
   }
 
   // Validate that Password matches PasswordConfirm
   if req.Password != req.PasswordConfirm {
-    help.APIResponse(c, 400, "Passwords must match.")
+    help.APIResponse(c, 400, "ValidationError", "Passwords must match.")
     return
   }
 
@@ -59,12 +59,12 @@ func AuthRegister(c *gin.Context) {
   createdUser := db.DB.Create(&newUser)
 
   if createdUser.Error != nil {
-    help.APIResponse(c, 400, createdUser.Error.Error())
+    help.APIResponse(c, 400, "DatabaseError", createdUser.Error.Error())
     return
   }
 
   // should be fine
-  help.APIResponse(c, 200, "Created")
+  help.APIResponse(c, 200, "OK", nil)
 }
 
 func AuthLogin(c *gin.Context) {
@@ -74,7 +74,7 @@ func AuthLogin(c *gin.Context) {
   err := c.BindJSON(&req)
 
   if err != nil {
-    help.APIResponse(c, 400, strings.Split(err.Error(), "\n"))
+    help.APIResponse(c, 400, "ValidationError", strings.Split(err.Error(), "\n"))
     return
   }
 
@@ -84,16 +84,24 @@ func AuthLogin(c *gin.Context) {
 
   if result.RowsAffected == 0 {
     // nothing found
-    help.APIResponse(c, 404, nil)
+    help.APIResponse(c, 404, "ResourceNotFound", nil)
     return
   }
 
   // user found, check password
   if !help.CheckPassword(req.Password, user.Password) {
-    help.APIResponse(c, 401, "Invalid password.")
+    help.APIResponse(c, 401, "AuthError", "Invalid password.")
     return
   }
 
-  // all good! return user
-  help.APIResponse(c, 200, user)
+  // all good! reup user api token
+  token := help.GenerateApiToken()
+  expires := help.GetLaterTime(60) // one hour from now
+
+  user.ApiToken = token
+  user.ApiTokenExpiresAt = expires
+
+  db.DB.Save(&user)
+  
+  help.APIResponse(c, 200, "OK", user)
 }

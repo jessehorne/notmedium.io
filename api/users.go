@@ -7,5 +7,5 @@ import (
 )
 
 func UsersGetAll(c *gin.Context) {
-  help.APIResponse(c, 200, []int{})
+  help.APIResponse(c, 200, "OK", []int{})
 }
