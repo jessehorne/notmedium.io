@@ -1,6 +1,8 @@
 package middleware
 
 import (
+  "time"
+  
   "github.com/gin-gonic/gin"
 
   "github.com/jessehorne/notmedium.io/help"
@@ -24,6 +26,11 @@ func Auth(c *gin.Context) {
   if result.RowsAffected == 0 {
     help.APIAbortResponse(c, 401, "TokenError", "Invalid token.")
     return
+  }
+
+  // Validate token
+  if user.ApiTokenExpiresAt.Before(time.Now()) {
+    help.APIAbortResponse(c, 401, "TokenExpiredError", "Your token has expired.")
   }
 
   // store authed user details
