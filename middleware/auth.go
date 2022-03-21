@@ -26,5 +26,8 @@ func Auth(c *gin.Context) {
     return
   }
 
+  // store authed user details
+  c.Set("user", user)
+
   c.Next()
 }
