@@ -2,7 +2,7 @@ package models
 
 import (
   "time"
-  
+
   "gorm.io/gorm"
 )
 
@@ -17,4 +17,5 @@ type User struct {
   profileImgPath string
   ApiToken string `gorm:"type:varchar(255)"`
   ApiTokenExpiresAt time.Time
+  IsAdmin bool
 }

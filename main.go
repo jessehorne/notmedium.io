@@ -21,6 +21,7 @@ func init() {
     Routes.POST("/login", api.AuthLogin)
 
     Routes.GET("/users", middleware.Auth, api.UsersGetAll)
+    Routes.GET("/users/:id", middleware.Auth, api.UsersGetOneByID)
   }
 }
 
