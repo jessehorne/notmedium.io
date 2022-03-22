@@ -104,3 +104,31 @@ func UsersUpdateByID(c *gin.Context) {
 
   help.APIResponse(c, 200, "OK", searchUser)
 }
+
+func UsersDeleteByID(c *gin.Context) {
+  userID := c.Param("id")
+  intUserID, _ := strconv.Atoi(userID)
+
+  // get user by id
+  var searchUser models.User
+  result := db.DB.First(&searchUser, intUserID)
+
+  if result.RowsAffected == 0 {
+    help.APIResponse(c, 404, "NotFoundByID", "No user found with that ID.")
+    return
+  }
+
+  // make sure user is admin OR current user
+  isSameUser := searchUser.ID == c.Value("user").(models.User).ID
+  isAdmin := c.Value("user").(models.User).IsAdmin
+
+  if !isSameUser && !isAdmin {
+    help.APIResponse(c, 401, "PermissionError", "You can't do that.")
+    return
+  }
+
+  // update user
+  db.DB.Delete(&searchUser)
+
+  help.APIResponse(c, 200, "OK", nil)
+}
