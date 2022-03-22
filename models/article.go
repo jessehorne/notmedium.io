@@ -7,15 +7,12 @@ import (
 type Article struct {
   gorm.Model
 
+  UserID uint
+
   Title string `gorm:"type:varchar(255)"`
-  ImgPath string `gorm:"type:varchar(255)"`
   Content string `gorm:"type:text"`
+  Desc string `gorm:"type:varchar(255)"`
+  ImgPath string `gorm:"type:varchar(255)"`
   Published bool
   Listed bool
-  MetaTitle string `gorm:"type:varchar(255)"`
-  MetaDesc string `gorm:"type:varchar(255)"`
-  MetaImgPath string `gorm:"type:varchar(255)"`
-  Views int64
-  Reads int64
-  Score int64
 }

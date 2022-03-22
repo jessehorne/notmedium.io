@@ -24,6 +24,12 @@ func init() {
     Routes.GET("/users/:id", middleware.Auth, api.UsersGetOneByID)
     Routes.PUT("/users/:id", middleware.Auth, api.UsersUpdateByID)
     Routes.DELETE("/users/:id", middleware.Auth, api.UsersDeleteByID)
+
+    Routes.GET("/articles", middleware.Auth, api.ArticlesGetAll)
+    Routes.GET("/articles/:id", middleware.Auth, api.ArticlesGetOneByID)
+    Routes.POST("/articles", middleware.Auth, api.ArticlesCreate)
+    Routes.PUT("/articles/:id", middleware.Auth, api.ArticlesUpdateByID)
+    Routes.DELETE("/articles/:id", middleware.Auth, api.ArticlesDeleteByID)
   }
 }
 
