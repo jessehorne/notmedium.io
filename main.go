@@ -4,6 +4,7 @@ import (
   "github.com/gin-gonic/gin"
 
   "github.com/jessehorne/notmedium.io/api"
+  "github.com/jessehorne/notmedium.io/routes"
   "github.com/jessehorne/notmedium.io/middleware"
 )
 
@@ -31,6 +32,8 @@ func init() {
     Routes.PUT("/articles/:id", middleware.Auth, api.ArticlesUpdateByID)
     Routes.DELETE("/articles/:id", middleware.Auth, api.ArticlesDeleteByID)
   }
+
+  Router.GET("/", routes.Index)
 }
 
 func main() {
