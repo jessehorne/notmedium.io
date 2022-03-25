@@ -11,15 +11,13 @@ import (
 )
 
 type RegisterRequest struct {
-  Email string `json:"email" binding:"required,email,max=255"`
   Username string `json:"username" binding:"required,max=255,alphanum"`
-  DisplayName string `json:"displayName" binding:"required,max=50"`
   Password string `json:"password" binding:"required,max=255"`
   PasswordConfirm string `json:"passwordConfirm" binding:"required,max=255"`
 }
 
 type LoginRequest struct {
-  Email string `json:"email" binding:"required,email,max=255"`
+  Username string `json:"username" binding:"required,max=255,alphanum"`
   Password string `json:"password" binding:"required,max=255"`
 }
 
@@ -47,10 +45,8 @@ func AuthRegister(c *gin.Context) {
 
   // create user struct
   newUser := models.User{
-    Email: req.Email,
     Username: req.Username,
     Password: hashedPassword,
-    DisplayName: req.DisplayName,
     ApiToken: apiToken,
     ApiTokenExpiresAt: help.GetLaterTime(60),
   }
@@ -80,7 +76,7 @@ func AuthLogin(c *gin.Context) {
 
   // get user from DB
   user := models.User{}
-  result := db.DB.Where("email = ?", req.Email).First(&user)
+  result := db.DB.Where("username = ?", req.Username).First(&user)
 
   if result.RowsAffected == 0 {
     // nothing found
@@ -102,6 +98,6 @@ func AuthLogin(c *gin.Context) {
   user.ApiTokenExpiresAt = expires
 
   db.DB.Save(&user)
-  
+
   help.APIResponse(c, 200, "OK", user)
 }

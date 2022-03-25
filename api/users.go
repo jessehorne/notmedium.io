@@ -13,7 +13,6 @@ import (
 
 type userUpdateRequest struct {
   Username string `json:"username" binding:"required,max=255,alphanum"`
-  DisplayName string `json:"displayName" binding:"required,max=50"`
   Description string `json:"description" binding:"required"`
 }
 
@@ -89,14 +88,6 @@ func UsersUpdateByID(c *gin.Context) {
   // only update certain values
   if jsonUser.Username != "" {
     searchUser.Username = jsonUser.Username
-  }
-
-  if jsonUser.DisplayName != "" {
-    searchUser.DisplayName = jsonUser.DisplayName
-  }
-
-  if jsonUser.Description != "" {
-    searchUser.Description = jsonUser.Description
   }
 
   // update user

@@ -16,6 +16,8 @@ func init() {
 
   Router.Use(gin.Recovery())
 
+  Router.Static("/public", "./public")
+
   Routes = Router.Group("/api")
   {
     Routes.POST("/register", api.AuthRegister)
@@ -34,6 +36,8 @@ func init() {
   }
 
   Router.GET("/", routes.Index)
+  Router.GET("/register", routes.Register)
+  Router.GET("/login", routes.Login)
 }
 
 func main() {
