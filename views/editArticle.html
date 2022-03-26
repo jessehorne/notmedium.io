@@ -1,0 +1,25 @@
+<div>
+  <input type="hidden" id="articleID" value="{{ .articleID }}"/>
+
+  <form id="form" action="" method="post">
+    <input type="hidden" name="userID" id="userID"/>
+    <input type="hidden" name="published" id="published"/>
+
+    <div>
+      <label>Title</label>
+      <input type="text" name="title" value="{{ .title }}" required/>
+    </div>
+
+    <div><label>Content</label><br></div>
+    <div>
+      <textarea rows="15" cols="80" name="content" required>{{ .content }}</textarea>
+    </div>
+
+    <div>
+      <a href="#" id="savedraft">Save Draft</a> |
+      <button type="submit">Publish</button>
+    </div>
+  </form>
+</div>
+
+<script src="/public/js/editArticle.js"></script>

@@ -58,7 +58,7 @@ func UsersGetArticles(c *gin.Context) {
 
   // get users
   var articles []models.Article
-  result := db.DB.Where("published =?", true).Where("user_id = ?", intUserID).Offset(page).Limit(limit).Find(&articles)
+  result := db.DB.Where("user_id = ?", intUserID).Offset(page).Limit(limit).Find(&articles)
 
   help.APIResponse(c, 200, "OK", &gin.H{
     "page": page,

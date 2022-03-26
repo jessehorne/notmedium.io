@@ -40,10 +40,12 @@ func init() {
   Router.GET("/", routes.Index)
   Router.GET("/register", routes.Register)
   Router.GET("/login", routes.Login)
-  Router.GET("/settings", routes.Settings)
+  Router.GET("/profile", routes.Profile)
   Router.GET("/new", routes.NewArticle)
+  Router.GET("/a/:id/edit", routes.EditArticle)
   Router.GET("/a/:id", routes.ViewArticle)
   Router.GET("/profile/:id", routes.ViewUser)
+
 }
 
 func main() {
