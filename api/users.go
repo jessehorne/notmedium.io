@@ -38,6 +38,36 @@ func UsersGetAll(c *gin.Context) {
   })
 }
 
+func UsersGetArticles(c *gin.Context) {
+  userID := c.Param("id")
+
+  intUserID, _ := strconv.Atoi(userID)
+
+  {
+    var user models.User
+    result := db.DB.First(&user, intUserID)
+
+    if result.RowsAffected == 0 {
+      help.APIResponse(c, 404, "NotFoundByID", "No user found with that ID.")
+      return
+    }
+  }
+
+  // pagination
+  limit, page := help.GetPaginationDetails(c)
+
+  // get users
+  var articles []models.Article
+  result := db.DB.Where("published =?", true).Where("user_id = ?", intUserID).Offset(page).Limit(limit).Find(&articles)
+
+  help.APIResponse(c, 200, "OK", &gin.H{
+    "page": page,
+    "limit": limit,
+    "count": result.RowsAffected,
+    "articles": articles,
+  })
+}
+
 func UsersGetOneByID(c *gin.Context) {
   userID := c.Param("id")
 
@@ -51,7 +81,17 @@ func UsersGetOneByID(c *gin.Context) {
     return
   }
 
-  help.APIResponse(c, 200, "OK", user)
+  // pagination
+  limit, page := help.GetPaginationDetails(c)
+
+  // get users
+  var articles []models.Article
+  db.DB.Where("published =?", true).Where("user_id = ?", intUserID).Offset(page).Limit(limit).Find(&articles)
+
+  help.APIResponse(c, 200, "OK", gin.H{
+    "user": user,
+    "articles": articles,
+  })
 }
 
 func UsersUpdateByID(c *gin.Context) {

@@ -26,16 +26,6 @@ func ArticlesGetAll(c *gin.Context) {
   var articles []models.Article
   result := db.DB.Where("published =?", true).Offset(page).Limit(limit).Find(&articles)
 
-  for _, val := range articles {
-    username, err := models.GetUsernameByID(val.UserID)
-
-    if err != nil {
-      val.Author = "ERROR"
-    }
-
-    val.Author = username
-  }
-
   help.APIResponse(c, 200, "OK", &gin.H{
     "page": page,
     "limit": limit,
