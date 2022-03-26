@@ -3,26 +3,20 @@ notmedium.io
 
 A free and open writing platform.
 
-# API
+# Setup
+
+Create a `.env` in ths project directory with the following MySQL variables.
 
 ```
-POST /login
-POST /register
+DB_NAME=
+DB_USER=
+DB_PASS=
+```
 
-GET /users
-GET /users/{id}
-PUT /users/{id}
-DELETE /users/{id}
+Then...
 
-GET /articles
-POST /articles
-GET /articles/{id}
-PUT /articles/{id}
-DELETE /articles/{id}
-
-GET /tags
-POST /tags
-DELETE /tags/{id}
+```bash
+go run main.go
 ```
 
 more coming soon...
