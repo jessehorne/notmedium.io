@@ -12,13 +12,10 @@ import (
 )
 
 type articleUpdateRequest struct {
-  UserID uint `json:"userID" binding:"required"`
+  UserID uint `json:"userID,string" binding:"required"`
   Title string `gorm:"type:varchar(255)" json:"title" binding:"required,min=1"`
   Content string `gorm:"type:text" json:"content" binding:"required,min=1"`
-  Desc string `gorm:"type:varchar(255)" json:"desc" binding:"required,min=1"`
-  ImgPath string `gorm:"type:varchar(255)" json:"imgPath"`
-  Published *bool `gorm:"type:bool" json:"published" binding:"required"`
-  Listed *bool `gorm:"type:bool" json:"listed" binding:"required"`
+  Published *bool `gorm:"type:bool" json:"published,string" binding:"required"`
 }
 
 func ArticlesGetAll(c *gin.Context) {
@@ -27,7 +24,17 @@ func ArticlesGetAll(c *gin.Context) {
 
   // get users
   var articles []models.Article
-  result := db.DB.Offset(page).Limit(limit).Find(&articles)
+  result := db.DB.Where("published =?", true).Offset(page).Limit(limit).Find(&articles)
+
+  for _, val := range articles {
+    username, err := models.GetUsernameByID(val.UserID)
+
+    if err != nil {
+      val.Author = "ERROR"
+    }
+
+    val.Author = username
+  }
 
   help.APIResponse(c, 200, "OK", &gin.H{
     "page": page,
@@ -47,6 +54,11 @@ func ArticlesGetOneByID(c *gin.Context) {
 
   if result.RowsAffected == 0 {
     help.APIResponse(c, 404, "NotFoundByID", "No article found with that ID.")
+    return
+  }
+
+  if article.UserID != c.Value("user").(models.User).ID {
+    help.APIResponse(c, 401, "Unauthorized", "You can't do that.")
     return
   }
 
@@ -84,19 +96,10 @@ func ArticlesUpdateByID(c *gin.Context) {
     return
   }
 
-  // only update certain values
-  if jsonArticle.ImgPath != "" {
-    searchArticle.ImgPath = jsonArticle.ImgPath
-  }
-
   searchArticle.Title = jsonArticle.Title
   searchArticle.Content = jsonArticle.Content
-  searchArticle.Desc = jsonArticle.Desc
 
   searchArticle.Published = *jsonArticle.Published
-  searchArticle.Listed = *jsonArticle.Listed
-
-
 
   // update user
   db.DB.Save(&searchArticle)
@@ -144,17 +147,14 @@ func ArticlesCreate(c *gin.Context) {
 
   newArticle := models.Article{
     Published: false,
-    Listed: true,
   }
 
   // set other values
+  newArticle.Author = c.Value("user").(models.User).Username
   newArticle.UserID = validateArticle.UserID
   newArticle.Title = validateArticle.Title
   newArticle.Content = validateArticle.Content
-  newArticle.Desc = validateArticle.Desc
-  newArticle.ImgPath = validateArticle.ImgPath
   newArticle.Published = *validateArticle.Published // can anyone see this?
-  newArticle.Listed = *validateArticle.Listed  // only those with link can see this?
 
   db.DB.Save(&newArticle)
 

@@ -35,9 +35,13 @@ func init() {
     Routes.DELETE("/articles/:id", middleware.Auth, api.ArticlesDeleteByID)
   }
 
+  // Views
   Router.GET("/", routes.Index)
   Router.GET("/register", routes.Register)
   Router.GET("/login", routes.Login)
+  Router.GET("/settings", routes.Settings)
+  Router.GET("/new", routes.NewArticle)
+  Router.GET("/a/:id", routes.ViewArticle)
 }
 
 func main() {

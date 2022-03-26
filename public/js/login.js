@@ -1,10 +1,13 @@
 $(document).ready(function() {
+  if (isUserAuthed()) {
+    window.location.href = "/";
+  }
+
+
   $("#login").submit(function(e) {
     e.preventDefault();
 
     var formData = getFormData($("#login"));
-
-    console.log(formData);
 
     (async () => {
       console.log("fetching...");
@@ -20,11 +23,13 @@ $(document).ready(function() {
       const res = await raw.json();
 
       if (raw.status === 200) {
-        window.localStorage.setItem("ApiToken", res.data.ApiToken);
-        window.localStorage.setItem("ApiTokenExpiresAt", res.data.ApiTokenExpiresAt);
+        var data = JSON.stringify(res.data);
+
+        window.localStorage.setItem("user", data);
+
         window.location.href = "http://localhost:8080/";
       } else {
-        console.log("Register didn't work!");
+        console.log("Login didn't work!");
       }
 
     })();

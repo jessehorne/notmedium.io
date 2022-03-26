@@ -1,8 +1,17 @@
 <h1>notmedium.io</h1>
 
-<div>
+<div class="hidden" id="not-authed-bar">
   <a href="/login">Login</a> |
   <a href="/register">Register</a>
 </div>
 
+<div class="hidden" id="authed-bar">
+  <a href="/">Home</a> |
+  <a href="/new">New Article</a> |
+  <a href="/settings">Settings</a> |
+  <a href="#" onclick="logout()">Logout</a>
+</div>
+
 <hr>
+
+<script src="/public/js/header.js"></script>
