@@ -48,7 +48,7 @@ func AuthRegister(c *gin.Context) {
     Username: req.Username,
     Password: hashedPassword,
     ApiToken: apiToken,
-    ApiTokenExpiresAt: help.GetLaterTime(60*4),
+    ApiTokenExpiresAt: help.GetLaterTime(1),
   }
 
   // attempt to create record in db
@@ -92,7 +92,7 @@ func AuthLogin(c *gin.Context) {
 
   // all good! reup user api token
   token := help.GenerateApiToken()
-  expires := help.GetLaterTime(60*4) // four hours from now
+  expires := help.GetLaterTime(1) // four hours from now
 
   user.ApiToken = token
   user.ApiTokenExpiresAt = expires
