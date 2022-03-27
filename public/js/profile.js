@@ -38,6 +38,9 @@ function loadArticles() {
     var articles = res.data.articles;
 
     if (raw.status === 200) {
+
+      $("#totalcount").html(res.data.totalCount);
+
       if (articles.length > 0) {
         articles.forEach(function(a) {
           var newString = '<div><b>STATUS</b> | <a href="/a/ID">TITLE</a> on CREATEDAT | <a href="/a/ID/edit">Edit</a> <a href="#" class="delete" data-id="ID">Delete</a></div>';

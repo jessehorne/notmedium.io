@@ -14,7 +14,7 @@ function loadArticles() {
     const res = await raw.json();
 
     var articles = res.data.articles;
-    
+
     // var count = res.data.count;
     // var limit = res.data.limit;
     // var page = res.data.page;
@@ -40,6 +40,8 @@ function loadArticles() {
       } else {
         $("#articles").html("There aren't any articles published at the moment.");
       }
+    } else if (raw.status == 401) {
+      window.location.href = "/login";
     } else {
       $("#articles").html("There aren't any articles published at the moment.");
     }
@@ -48,5 +50,7 @@ function loadArticles() {
 }
 
 $(document).ready(function() {
+  if (!isUserAuthed()) window.location.href = "/login";
+
   loadArticles();
 });

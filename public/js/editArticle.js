@@ -34,6 +34,8 @@ $(document).ready(function() {
 
       if (raw.status === 200) {
         window.location.href = "/a/" + articleID;
+      } else if (raw.status == 401) {
+        window.location.href = "/login";
       } else {
         $("#error").removeClass("hidden");
       }
@@ -68,6 +70,8 @@ $(document).ready(function() {
 
       if (raw.status === 200) {
         window.location.href = "/a/" + articleID;
+      } else if (raw.status == 401) {
+        window.location.href = "/login";
       } else {
         $("#error").removeClass("hidden");
       }

@@ -55,16 +55,30 @@ func UsersGetArticles(c *gin.Context) {
 
   // pagination
   limit, page := help.GetPaginationDetails(c)
+  count := 0
 
   // get users
   var articles []models.Article
-  result := db.DB.Where("user_id = ?", intUserID).Offset(page).Limit(limit).Find(&articles)
+  var returnArticles []models.Article
+
+  result := db.DB.Where("user_id = ?", intUserID).Order("id desc").Find(&articles)
+
+  // pagination
+  startIndex := (page * limit)
+  endIndex := (page * limit) + limit
+  for i := startIndex; int64(i) < result.RowsAffected; i++ {
+    if i >= startIndex && i < endIndex {
+      returnArticles = append(returnArticles, articles[i])
+      count += 1
+    }
+  }
 
   help.APIResponse(c, 200, "OK", &gin.H{
     "page": page,
     "limit": limit,
-    "count": result.RowsAffected,
-    "articles": articles,
+    "count": count,
+    "articles": returnArticles,
+    "totalCount": result.RowsAffected,
   })
 }
 

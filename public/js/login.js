@@ -1,8 +1,4 @@
 $(document).ready(function() {
-  if (isUserAuthed()) {
-    window.location.href = "/";
-  }
-
 
   $("#login").submit(function(e) {
     e.preventDefault();
