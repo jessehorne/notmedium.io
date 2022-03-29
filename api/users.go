@@ -57,7 +57,7 @@ func UsersGetArticles(c *gin.Context) {
   limit, page := help.GetPaginationDetails(c)
   count := 0
 
-  // get users
+  // get user articles
   var articles []models.Article
   var returnArticles []models.Article
 

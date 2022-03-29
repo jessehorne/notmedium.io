@@ -1,8 +1,12 @@
-function loadArticles() {
-  $("#articles").html("");
+const urlParams = new URLSearchParams(window.location.search);
 
-  (async () => {
-    const raw = await fetch('http://localhost:8080/api/articles', {
+var page = urlParams.get("page");
+var limit = urlParams.get("limit");
+
+function loadArticles(page) {
+
+  (async (page) => {
+    const raw = await fetch('http://localhost:8080/api/articles?page=' + page, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -38,19 +42,26 @@ function loadArticles() {
           $("#articles").append(newElem);
         });
       } else {
-        $("#articles").html("There aren't any articles published at the moment.");
+        // $("#articles").html("There aren't any articles published at the moment.");
       }
     } else if (raw.status == 401) {
       window.location.href = "/login";
     } else {
-      $("#articles").html("There aren't any articles published at the moment.");
+      // $("#articles").html("There aren't any articles published at the moment.");
     }
 
-  })();
+  })(page);
 }
 
 $(document).ready(function() {
   if (!isUserAuthed()) window.location.href = "/login";
 
-  loadArticles();
+  loadArticles(0);
+
+  $("#load-more-link").click(function(e) {
+    e.preventDefault();
+
+    page = page + 1;
+    loadArticles(page);
+  });
 });
