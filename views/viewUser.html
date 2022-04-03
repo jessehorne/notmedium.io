@@ -1,19 +1,15 @@
-<input type="hidden" id="userID" value="{{ .userID }}"/>
-
 <div>
   <div>
-    <b>Username: </b><i id="username"></i>
+    <b>Username: </b><i id="username">{{ .data.user.Username }}</i>
   </div>
 
   <div>
-    <b>CreatedAt: </b><i id="createdat"></i>
+    <b>CreatedAt: </b><i id="createdat">{{ .data.user.CreatedAt }}</i>
   </div>
 </div>
 
 <div>
   <h2>Articles</h2>
 
-  <div id="articles"></div>
+  <div id="articles">coming soon...</div>
 </div>
-
-<script src="/public/js/viewUser.js"></script>

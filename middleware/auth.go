@@ -2,8 +2,9 @@ package middleware
 
 import (
   "time"
-  
+
   "github.com/gin-gonic/gin"
+  "github.com/gin-contrib/sessions"
 
   "github.com/jessehorne/notmedium.io/help"
   "github.com/jessehorne/notmedium.io/db"
@@ -35,6 +36,20 @@ func Auth(c *gin.Context) {
 
   // store authed user details
   c.Set("user", user)
+
+  c.Next()
+}
+
+func CookieAuth(c *gin.Context) {
+  // is user authed?
+  session := sessions.Default(c)
+
+  authed := session.Get("authed")
+
+  if authed != true {
+    c.Redirect(302, "/login")
+    return
+  }
 
   c.Next()
 }

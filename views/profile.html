@@ -1,9 +1,9 @@
 <div>
   <h2>Settings</h2>
 
-  <p><b>Username:</b> <i id="username"></i></p>
+  <p><b>Username:</b> <i id="username">{{ .user.Username}}</i></p>
 
-  <p><b>Created:</b> <i id="createdat"></i></p>
+  <p><b>Created:</b> <i id="createdat">{{ .user.CreatedAt }}</i></p>
 
   <p>
     <b>Theme: </b> <i id="theme"></i><br>
@@ -15,9 +15,5 @@
 <div id="article-section">
   <h2>My Articles (<i id="totalcount"></i>)</h2>
 
-  <div id="articles"></div>
+  <div id="articles">coming soon...</div>
 </div>
-
-<hr>
-
-<script src="/public/js/profile.js"></script>

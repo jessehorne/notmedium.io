@@ -1,11 +1,17 @@
-<div id="article-section">
-  <h2>Articles</h2>
-
-  <div id="articles"></div>
-
-  <a href="" id="load-more-link">Load More</a>
-</div>
-
-<hr>
-
-<script src="/public/js/index.js"></script>
+{{ if not .data.articles }}
+  <i>There's nothing here yet...</i>
+{{ else }}
+  {{ range $key, $val := .data.articles }}
+    <div class="row">
+      <div class="col-12">
+        <div class="article">
+          <div class="article-item article-vote">{{ $key }}. <a href="#">^</a> | <a href="#">v</a></div>
+          <div class="article-item article-title"><a href="/a/{{ .ID }}">{{ .Title }}</a></div>
+          <div class="article-item article-rank">({{ .Rank }})</div>
+          <div class="article-item article-author">by <a href="/@{{ .Author }}">{{ .Author }}</a></div>
+          <div class="article-item article-date">{{ .CreatedAgo }}</div>
+        </div>
+      </div>
+    </div>
+  {{ end }}
+{{ end }}

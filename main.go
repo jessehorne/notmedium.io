@@ -2,6 +2,8 @@ package main
 
 import (
   "github.com/gin-gonic/gin"
+  "github.com/gin-contrib/sessions"
+  "github.com/gin-contrib/sessions/cookie"
 
   "github.com/jessehorne/notmedium.io/api"
   "github.com/jessehorne/notmedium.io/routes"
@@ -15,6 +17,9 @@ func init() {
   Router = gin.Default()
 
   Router.Use(gin.Recovery())
+
+  store := cookie.NewStore([]byte("secret"))
+  Router.Use(sessions.Sessions("sesh", store))
 
   Router.Static("/public", "./public")
 
@@ -37,14 +42,21 @@ func init() {
   }
 
   // Views
+  Router.GET("/@:username", routes.ViewUser)
   Router.GET("/", routes.Index)
+  Router.GET("/new", routes.IndexNew)
+
   Router.GET("/register", routes.Register)
   Router.GET("/login", routes.Login)
+  Router.POST("/register", routes.RegisterPost)
+  Router.POST("/login", routes.LoginPost)
+
   Router.GET("/profile", routes.Profile)
-  Router.GET("/new", routes.NewArticle)
+  Router.GET("/submit", middleware.CookieAuth, routes.NewArticle)
+  Router.POST("/submit", middleware.CookieAuth, routes.NewArticlePost)
   Router.GET("/a/:id/edit", routes.EditArticle)
   Router.GET("/a/:id", routes.ViewArticle)
-  Router.GET("/profile/:id", routes.ViewUser)
+  Router.GET("/logout", routes.Logout)
 
 }
 

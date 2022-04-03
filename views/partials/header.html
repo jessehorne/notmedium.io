@@ -1,17 +1,47 @@
-<h1>notmedium.io</h1>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">notmedium.io</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/">top</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/new">new</a>
+          </li>
+          <li class="nav-item">
+            <form class="d-flex">
+              <input class="form-control" type="text" placeholder="search...">
+              <button type="submit" class="btn btn-sm">Search</button>
+            </form>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/submit">submit</a>
+          </li>
+        </ul>
 
-<div class="hidden" id="not-authed-bar">
-  <a href="/login">Login</a> |
-  <a href="/register">Register</a>
-</div>
+        <div>
+          {{ if .authed }}
+            <a href="/logout">Logout</a>
+          {{ else }}
+            <a href="/login">Login</a> | <a href="/register">Register</a>
+          {{ end }}
+        </div>
+      </div>
+    </div>
+  </nav>
 
-<div class="hidden" id="authed-bar">
-  <a href="/">Home</a> |
-  <a href="/new">New Article</a> |
-  <a href="/profile">My Profile</a> |
-  <a href="#" onclick="logout()">Logout</a>
-</div>
+  {{ if .error }}
+    <div class="alert alert-danger" role="alert">
+      {{ .error }}
+    </div>
+  {{ end }}
 
-<hr>
-
-<script src="/public/js/header.js"></script>
+  {{ if .message }}
+    <div class="alert alert-primary" role="alert">
+      {{ .message }}
+    </div>
+  {{ end }}

@@ -2,22 +2,28 @@ package routes
 
 import (
   "github.com/gin-gonic/gin"
+
+  "github.com/jessehorne/notmedium.io/help"
+  "github.com/jessehorne/notmedium.io/models"
+  "github.com/jessehorne/notmedium.io/db"
 )
 
 func ViewUser(c *gin.Context) {
-  userID := c.Param("id")
+  username := c.Param("username")
 
-  data := map[string]interface{}{
-    "userID": userID,
-  }
+  var u models.User
+  result := db.DB.Where("username = ?", username).First(&u)
 
-  page, err := Blocks.ParseTemplate("viewUser", "main", data)
-
-  if err != nil {
+  if result.RowsAffected == 0 {
+    help.APIResponse(c, 404, "NOTFOUND", username)
     return
   }
 
-  c.Data(200, "text/html; charset=utf-8", []byte(page))
+  data := map[string]interface{}{
+    "user": u,
+  }
+
+  help.View(c, "viewUser", "main", data)
 }
 
 func ViewUserArticles(c *gin.Context) {
@@ -27,23 +33,11 @@ func ViewUserArticles(c *gin.Context) {
     "userID": userID,
   }
 
-  page, err := Blocks.ParseTemplate("viewUserArticles", "main", data)
-
-  if err != nil {
-    return
-  }
-
-  c.Data(200, "text/html; charset=utf-8", []byte(page))
+  help.View(c, "viewUserArticles", "main", data)
 }
 
 func Profile(c *gin.Context) {
   var data map[string]interface{}
 
-  page, err := Blocks.ParseTemplate("profile", "main", data)
-
-  if err != nil {
-    return
-  }
-
-  c.Data(200, "text/html; charset=utf-8", []byte(page))
+  help.View(c, "profile", "main", data)
 }

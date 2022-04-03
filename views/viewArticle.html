@@ -1,13 +1,11 @@
 <div>
-  <input type="hidden" id="articleID" value="{{ .articleID }}"/>
+  {{ if not .data.article.Published }}
+    <div>
+      <b>THIS IS A DRAFT!<a href="/a/{{ .data.article.ID }}/edit" id="publish">Publish Now</a>
+    </div>
+  {{ end }}
 
-  <div id="ifDraft" class="hidden">
-    <b>THIS IS A DRAFT!</a> <a href="/a/{{ .articleID }}/edit" id="publish">Publish Now</a>
-  </div>
+  <h2 id="title">{{ .data.article.Title }}</h2>
 
-  <h2 id="title"></h2>
-
-  <p id="content"></p>
+  <p id="content">{{ .data.article.Content }}</p>
 </div>
-
-<script src="/public/js/viewArticle.js"></script>

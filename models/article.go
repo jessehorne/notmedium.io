@@ -13,4 +13,6 @@ type Article struct {
   Title string `gorm:"type:varchar(255)"`
   Content string `gorm:"type:text"`
   Published bool
+
+  Rank int
 }
