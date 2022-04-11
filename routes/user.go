@@ -21,6 +21,8 @@ func ViewUser(c *gin.Context) {
 
   data := map[string]interface{}{
     "user": u,
+    "created": help.GetAgo(u.CreatedAt),
+    "articles": u.Articles(),
   }
 
   help.View(c, "viewUser", "main", data)

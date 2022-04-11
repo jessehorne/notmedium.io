@@ -16,3 +16,13 @@ type Article struct {
 
   Rank int
 }
+
+type ArticleResponse struct {
+  ID uint
+  Author string
+  Title string `gorm:"type:varchar(255)"`
+  Published bool
+  Rank int
+
+  CreatedAgo string
+}

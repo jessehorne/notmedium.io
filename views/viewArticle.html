@@ -5,6 +5,14 @@
     </div>
   {{ end }}
 
+  {{ if .data.owned }}
+    <a href="/a/{{ .data.article.ID }}/edit">Edit</a> |
+    <a href="/a/{{ .data.article.ID }}/delete" onclick="return confirm('Are you sure?');">Delete</a>
+  {{ else }}
+    Does not own!
+    {{ .data.owned }}
+  {{ end }}
+
   <h2 id="title">{{ .data.article.Title }}</h2>
 
   <p id="content">{{ .data.article.Content }}</p>

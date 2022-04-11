@@ -1,23 +1,24 @@
 <div>
-  <input type="hidden" id="articleID" value="{{ .articleID }}"/>
-
-  <form id="form" action="" method="post">
+  <form id="form" action="/a/{{ .data.articleID }}/edit" method="POST">
     <input type="hidden" name="userID" id="userID"/>
     <input type="hidden" name="published" id="published"/>
 
     <div>
       <label>Title</label>
-      <input type="text" name="title" value="{{ .title }}" required/>
+      <input type="text" name="title" value="{{ .data.title }}" required/>
     </div>
 
     <div><label>Content</label><br></div>
     <div>
-      <textarea rows="15" cols="80" name="content" required>{{ .content }}</textarea>
+      <textarea rows="15" cols="80" name="content" required>{{ .data.content }}</textarea>
     </div>
 
     <div>
-      <a href="#" id="savedraft">Save Draft</a> |
-      <button type="submit">Publish</button>
+      <b>Publish? If this is checked, the article will be published. If it isn't, it will be saved as a draft.</b> <input type="checkbox" name="publish"/>
+    </div>
+
+    <div>
+      <button type="submit">Submit</button>
     </div>
   </form>
 </div>

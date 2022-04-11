@@ -4,12 +4,29 @@
   </div>
 
   <div>
-    <b>CreatedAt: </b><i id="createdat">{{ .data.user.CreatedAt }}</i>
+    <b>Created: </b><i id="createdat">{{ .data.created }}</i>
   </div>
 </div>
 
 <div>
   <h2>Articles</h2>
 
-  <div id="articles">coming soon...</div>
+  <div id="articles">
+    {{ if not .data.articles }}
+      <i>You haven't written anything yet.</i>
+    {{ else }}
+      {{ range $key, $val := .data.articles }}
+        <div class="row">
+          <div class="col-12">
+            <div class="article">
+              <div class="article-item article-vote">{{ inc $key }}.</div>
+              <div class="article-item article-title"><a href="/a/{{ .ID }}">{{ .Title }}</a></div>
+              <div class="article-item article-rank">({{ .Rank }})</div>
+              <div class="article-item article-date">{{ .CreatedAgo }}</div>
+            </div>
+          </div>
+        </div>
+      {{ end }}
+    {{ end }}
+  </div>
 </div>

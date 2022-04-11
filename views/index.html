@@ -5,7 +5,7 @@
     <div class="row">
       <div class="col-12">
         <div class="article">
-          <div class="article-item article-vote">{{ $key }}. <a href="#">^</a> | <a href="#">v</a></div>
+          <div class="article-item article-vote">{{ inc $key }}. <a href="#">^</a> | <a href="#">v</a></div>
           <div class="article-item article-title"><a href="/a/{{ .ID }}">{{ .Title }}</a></div>
           <div class="article-item article-rank">({{ .Rank }})</div>
           <div class="article-item article-author">by <a href="/@{{ .Author }}">{{ .Author }}</a></div>

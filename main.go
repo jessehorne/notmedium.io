@@ -55,7 +55,9 @@ func init() {
   Router.GET("/submit", middleware.CookieAuth, routes.NewArticle)
   Router.POST("/submit", middleware.CookieAuth, routes.NewArticlePost)
   Router.GET("/a/:id/edit", routes.EditArticle)
+  Router.POST("/a/:id/edit", routes.EditArticlePost)
   Router.GET("/a/:id", routes.ViewArticle)
+  Router.GET("/a/:id/delete", routes.DeleteArticle)
   Router.GET("/logout", routes.Logout)
 
 }

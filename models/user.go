@@ -7,6 +7,7 @@ import (
   "gorm.io/gorm"
 
   "github.com/jessehorne/notmedium.io/db"
+  "github.com/jessehorne/notmedium.io/help"
 )
 
 type User struct {
@@ -28,4 +29,33 @@ func GetUsernameByID(id uint) (string, error) {
   }
 
   return user.Username, nil
+}
+
+func (u *User) Articles() []ArticleResponse {
+  // get articles
+  var articles []Article
+  var formatted []ArticleResponse
+  result := db.DB.Order("`created_at` DESC").Where("published =?", true).Find(&articles)
+
+  if result.RowsAffected == 0 {
+    return formatted
+  }
+
+  // do CreatedAgo's
+  for _,v := range articles {
+    ago := help.GetAgo(v.CreatedAt)
+
+    newFormatted := ArticleResponse{
+      ID: v.ID,
+      Author: v.Author,
+      Title: v.Title,
+      Published: v.Published,
+      Rank: v.Rank,
+      CreatedAgo: ago,
+    }
+
+    formatted = append(formatted, newFormatted)
+  }
+
+  return formatted
 }

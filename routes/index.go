@@ -8,16 +8,6 @@ import (
   "github.com/jessehorne/notmedium.io/help"
 )
 
-type ArticleResponse struct {
-  ID uint
-  Author string
-  Title string `gorm:"type:varchar(255)"`
-  Published bool
-  Rank int
-
-  CreatedAgo string
-}
-
 // Shows homepage view with top articles
 func Index(c *gin.Context) {
   // pagination
@@ -25,14 +15,14 @@ func Index(c *gin.Context) {
 
   // get articles
   var articles []models.Article
-  var formatted []ArticleResponse
+  var formatted []models.ArticleResponse
   result := db.DB.Order("`rank` DESC").Where("published =?", true).Limit(limit).Offset(page*limit).Find(&articles)
 
   // do CreatedAgo's
   for _,v := range articles {
     ago := help.GetAgo(v.CreatedAt)
 
-    newFormatted := ArticleResponse{
+    newFormatted := models.ArticleResponse{
       ID: v.ID,
       Author: v.Author,
       Title: v.Title,
@@ -54,7 +44,6 @@ func Index(c *gin.Context) {
   }
 
   help.View(c, "index", "main", data)
-  // help.APIResponse(c, 200, "OK", data)
 }
 
 func IndexNew(c *gin.Context) {
@@ -63,14 +52,14 @@ func IndexNew(c *gin.Context) {
 
   // get articles
   var articles []models.Article
-  var formatted []ArticleResponse
+  var formatted []models.ArticleResponse
   result := db.DB.Order("`created_at` DESC").Where("published =?", true).Limit(limit).Offset(page*limit).Find(&articles)
 
   // do CreatedAgo's
   for _,v := range articles {
     ago := help.GetAgo(v.CreatedAt)
 
-    newFormatted := ArticleResponse{
+    newFormatted := models.ArticleResponse{
       ID: v.ID,
       Author: v.Author,
       Title: v.Title,
